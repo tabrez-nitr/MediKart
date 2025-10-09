@@ -1,1 +1,7 @@
 @import "tailwindcss";
+@import 'remixicon/fonts/remixicon.css';
+
+html, body {
+    overflow-x: hidden;
+  }
+
