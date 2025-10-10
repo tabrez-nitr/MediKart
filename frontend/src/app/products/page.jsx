@@ -2,10 +2,10 @@
 'use client'
 import React from 'react'
 import MedicineCategory from '@/components/MedicineCategory'
-import getMedicines from '@/api/medicines'
+import { getMedicines } from '@/api/modalApi'
 import Image from 'next/image'
 import Navbar from '@/components/Navbar'
-import { userSelection } from '@/cartStore'
+import { userSelection , productsCart } from '@/cartStore'
 import { useEffect , useState } from 'react'
 
 
@@ -13,16 +13,22 @@ import { useEffect , useState } from 'react'
  function Products() {
 
   const { selectedCategory } = userSelection()
-  const [medicines, setMedicines] = useState([])
+ 
+  const { products  , setProducts } = productsCart()
 
 
-   useEffect(()=>{
-     
+   useEffect(()=>{ 
+       // no need to fetch multiple times 
+       if(products.length !== 0){
+        console.log("returned before calling async ")
+        return
+       }  
        
        const fetchData = async() => {
         try{
             const data = await getMedicines()
-            setMedicines(data)
+            setProducts(data)
+            console.log("products are "+products)
         }
         catch(error){
           console.log(error)
@@ -30,7 +36,9 @@ import { useEffect , useState } from 'react'
        }
        fetchData()
    },[])
-   console.log(medicines)
+
+  
+   console.log("products are "+products)
 
   return (
     <div className='bg-[#F8FAFC]'>
@@ -38,7 +46,7 @@ import { useEffect , useState } from 'react'
      <MedicineCategory/>
       
       <div className='grid grid-cols-2 gap-3 px-2 mt-5 '>
-        {medicines.filter((elem)=> selectedCategory === "all" || selectedCategory === elem.category.toLowerCase())
+        {products.filter((elem)=> selectedCategory === "all" || selectedCategory === elem.category.toLowerCase())
         .map((elem) => (
           <div key={elem.id}>
           

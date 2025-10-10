@@ -125,4 +125,41 @@
           return medicine
 }
 
-export default getMedicines;
+function getCartMedicine() {
+  const cart = [
+    {
+    
+      id: a,
+      name: "Paracetamol",
+      price: 100,
+      description: "Reduces fever and relieves mild to moderate pain.",
+      image: "/sampleImage.avif",
+      category: "general",
+      details: "100mg, 120 tablets",
+      qty : 1
+    },
+    {
+      id: b,
+      name: "Ibuprofen",
+      price: 120,
+      description: "Pain reliever and anti-inflammatory medicine.",
+      image: "/sampleImage.avif",
+      category: "general",
+      details: "200mg, 100 tablets",
+      qty : 2
+    },
+    {
+      id: c,
+      name: "Cetirizine",
+      price: 90,
+      description: "Used to relieve allergy symptoms such as runny nose and sneezing.",
+      image: "/sampleImage.avif",
+      category: "general",
+      details: "10mg, 90 tablets",
+      qty : 1
+    },
+  ]
+}
+
+
+export { getMedicines , getCartMedicine };
