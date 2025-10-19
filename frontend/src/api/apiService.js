@@ -9,7 +9,7 @@ export const getProducts = async () => {
          return response;
     }
     catch(error) {
-        console.log("An error occured")
+        console.log(""+error)
 
     }
 
@@ -19,9 +19,11 @@ export const getProducts = async () => {
 export const getCartProducts = async() => {
     try {
         const response = await getCartMedicine()
+        console.log("cart products " +response)
         return response;
+
     }
     catch(error) {
-        console.log("An error occured")
+        console.log("error"+error)
     }
 }

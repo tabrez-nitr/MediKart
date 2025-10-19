@@ -125,11 +125,12 @@
           return medicine
 }
 
+// demo get car products api 
 function getCartMedicine() {
   const cart = [
     {
     
-      id: a,
+      id: 2100,
       name: "Paracetamol",
       price: 100,
       description: "Reduces fever and relieves mild to moderate pain.",
@@ -139,7 +140,7 @@ function getCartMedicine() {
       qty : 1
     },
     {
-      id: b,
+      id: 2200,
       name: "Ibuprofen",
       price: 120,
       description: "Pain reliever and anti-inflammatory medicine.",
@@ -149,7 +150,7 @@ function getCartMedicine() {
       qty : 2
     },
     {
-      id: c,
+      id: 2300,
       name: "Cetirizine",
       price: 90,
       description: "Used to relieve allergy symptoms such as runny nose and sneezing.",
@@ -159,7 +160,89 @@ function getCartMedicine() {
       qty : 1
     },
   ]
+  return cart
 }
 
 
-export { getMedicines , getCartMedicine };
+
+
+
+
+
+
+
+
+function getPackageElement(){
+  const packageElement = [
+        {
+        id : "20A",
+        name : '⁠Otoscope',
+        unit : 1,
+        image : "/otoscope.jpg"
+       },
+       {
+        id : "21A",
+        name : 'Opthalmo scope',
+        unit : 1,
+        image : "/OpthalmoScope.webp"
+       },
+       {
+        id : "22A",
+        name : 'Disposable Tongue depressor',
+        unit : 1,
+        image : "/DisposableTongueDepressor.webp"
+       },
+       {
+        id : "23A",
+        name : ' Big steel tray',
+        unit : 1,
+        image : "/BigSteelTray.webp"
+       },
+       {
+        id : "24A",
+        name : 'Stethoscope',
+        unit : 1,
+        image : "/Stethoscope.webp"
+       },
+       {
+        id : "25A",
+        name : '⁠ ⁠Cardiac specific Troponin T kit',
+        unit : 1,
+        image : "/TROPONIN-T.webp"
+       },
+       {
+        id : "26A",
+        name : ' ⁠Malarial pv/pf kit',
+        unit : 1,
+        image : "/otoscope.jpg"
+       },
+       {
+        id : "27A",
+        name : '⁠Sphygmomanometer (Digital/manual)',
+        unit : 1,
+        image : "/otoscope.jpg"
+       },
+       {
+        id : "28A",
+        name : 'Proctoscope',
+        unit : 1,
+        image : "/otoscope.jpg"
+       },
+       {
+        id : "29A",
+        name : 'Thermameter( digital head/digital Arm)',
+        unit : 1,
+        image : "/otoscope.jpg"
+       },
+       {
+        id : "30A",
+        name : 'Reflex hammer',
+        unit : 1,
+        image : "/otoscope.jpg"
+       },
+   ]
+   return packageElement
+}
+
+
+export { getMedicines , getCartMedicine , getPackageElement };

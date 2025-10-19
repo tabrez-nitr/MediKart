@@ -1,13 +1,34 @@
 'use client'
 import React from 'react'
-import { userSelection } from '@/cartStore'
+import { userSelection , } from '@/cartStore'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect , useState } from 'react'
+import { getCartProducts } from '@/api/apiService'
+
 
 function userCart() {
 
   const { cart , setCart } = userSelection()
   console.log(cart)
+  const [ cartElem , setCartElem ] = useState([])
+  const [total , setTotal] = useState(0)
+
+ useEffect(()=>{
+  const fetchdata = async()=> {
+    try {
+      const response = await getCartProducts()
+      console.log("cart products " +response)
+      setCart(response)
+      setCartElem(response)
+      console.log(setCartElem)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+  fetchdata()
+ },[])
 
   // if(cart.length === 0)
   //   return (
@@ -23,12 +44,12 @@ function userCart() {
      <div className='px-5'>
       {/* topbar */}
       <div className='flex '>
-       <Link href="/products"><i className="ri-arrow-left-line text-[20px]"></i></Link>
+       <Link href="/package"><i className="ri-arrow-left-line text-[20px]"></i></Link>
        <div className='flex justify-center w-[100%]'><h2 className='text-[20px] font-medium '>Cart</h2></div>
       </div>
 
       <div className='mt-10'>
-        {cart.map((item)=>(
+        {cartElem.map((item)=>(
 
           <div key={item.id} className='mb-4 shadow-[0_0_10px_#0000001A] rounded-2xl px-5 py-3 bg-[#FFFFFF]'>
             <div className='flex justify-between '>
@@ -55,6 +76,7 @@ function userCart() {
         ))}
       </div>
       </div>
+
       {/* checkout button  */}
       <div className='absolute bottom-5 w-full '>
         <div className='flex justify-center'>

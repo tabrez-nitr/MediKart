@@ -5,7 +5,9 @@ const userSelection = create((set) => ({
         setSelectedCategory: (category) => set({ selectedCategory: category }),
         cart : [         
         ] ,
-        setCart : (item) => set([item ,...cart]) // update cart if new items are added 
+        setCart : (item) => set((state)=>({
+                cart : [...item , ...state.cart]
+        })) // update cart if new items are added 
 }))
 
 
