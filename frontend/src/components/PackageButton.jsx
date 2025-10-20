@@ -12,9 +12,19 @@ import { useEffect } from 'react';
 function packageButton() {
     
     const router = useRouter();
-    const {cart , setCart} = useCartStore();
-    const { email} = useUserStore();
-    console.log("your email is "+email)
+    const {cart , setCart , addToCart} = useCartStore();
+    const { email  , uid } = useUserStore();
+    const packageItem = [
+      {
+      id : 20002 ,
+      name : "Fundameter Package" ,
+      price : 1000 ,
+      image : "/fundameterPackage.png",
+      quantity : 1
+    },
+    ]
+
+  console.log("your email is "+email)
    useEffect(() => {
     if (!email) {
       router.push('/');
@@ -23,7 +33,8 @@ function packageButton() {
 
     const handelAddToCart = () => {
         console.log("Add to cart clicked")
-        setCart([...cart , {id : 20002 , name : "Fundameter Package" , price : 1000 , image : "/fundameterPackage.png"}])
+        addToCart(packageItem , uid)
+       
     }
   return (
     <div className='fixed bottom-5 z-10 w-full'>

@@ -7,6 +7,8 @@ import {doc , getDoc} from "firebase/firestore";
 import { db } from "@/config/firebase";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/userStore";
+import  useCartStore  from "@/stores/useCart";
+
 
 
 
@@ -16,6 +18,8 @@ export default function Home() {
 
   const [isLoading , setIsLoading] = useState(true)
   const router = useRouter()
+
+  const {cart , setCart} = useCartStore();
 
   const { email , setUserInfo , clearUserInfo } = useUserStore();
 
@@ -41,6 +45,7 @@ export default function Home() {
         if(docSnap.exists()){
           console.log("Document data:", docSnap.data());
           setUserInfo(docSnap.data());
+          setCart(docSnap.data().cart);
          
         }
         else{

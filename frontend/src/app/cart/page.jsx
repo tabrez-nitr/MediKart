@@ -4,10 +4,13 @@ import React from 'react'
 import Link from 'next/link';
 import { useState } from 'react';
 import useCartStore from '@/stores/useCart';
+import { useUserStore } from '@/userStore';
+
 
 // Renamed to UserCart (PascalCase) which is a standard convention for React components
 function UserCart() {
-  const {cart} = useCartStore();
+  const { cart } = useCartStore();
+  const {uid} = useUserStore();
 
   const sample = [{
     id : 2000020002,
@@ -17,26 +20,15 @@ function UserCart() {
     quantity: 1, // Added for calculation example
   }]
 
-  console.log(cart)
+  console.log( cart )
+  const { removeItem } = useCartStore();
 
-  // Your original commented-out block is preserved below as requested.
-  // if(cart.length === 0){
-  //   return (
-  //     <div className='h-screen'>
-  //       <Link href="/package"><i className="ri-arrow-left-line absolute left-5 top-5 text-2xl"></i></Link>
-  //       <h2 className='text-[20px] font-medium text-center pt-5'>Cart</h2>
-  //         <div className='flex justify-center mt-40'>
-  //           <i className="ri-shopping-cart-fill text-8xl text-black/70"></i>
-  //         </div>
-  //         <h2 className='text-[20px] font-medium text-center pt-5'>Your cart is empty</h2>
-  //     </div>
-  //   )
-  // }
+
 
   // --- Improved Empty Cart View ---
   // If your cart is empty, this cleaner UI will be displayed.
   // Note: For demonstration, this won't show unless you change 'sample' to an empty array [].
-  if (sample.length === 0) {
+  if (cart.length === 0) {
     return (
       <div className='flex flex-col items-center justify-center min-h-screen bg-gray-50 text-center px-4'>
         <div className='p-8 bg-white rounded-full shadow-md mb-6'>
@@ -74,7 +66,7 @@ function UserCart() {
 
           {/* --- Cart Items List --- */}
           <div className='lg:col-span-2 space-y-4'>
-            {sample.map((item)=>(
+            {cart.map((item)=>(
               <div key={item.id} className='p-4 bg-white rounded-2xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] flex items-center gap-4'>
                  {/* Item Image */}
                 <img src={item.image} alt={item.name} className='w-24 h-24 object-cover rounded-xl flex-shrink-0' />
@@ -86,6 +78,8 @@ function UserCart() {
                     <p className='font-bold text-indigo-600 text-base'>₹ {item.price.toLocaleString()}</p>
                   </div>
 
+
+
                   {/* Quantity & Delete */}
                   <div className='flex items-center gap-4'>
                       <div className='flex items-center gap-2 text-lg bg-gray-100 rounded-full p-1'>
@@ -93,7 +87,11 @@ function UserCart() {
                         <span className='w-8 text-center font-medium text-base'>{item.quantity}</span>
                         <button className='w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-200 rounded-full transition'>+</button>
                       </div>
-                      <button className='text-gray-400 hover:text-red-500 transition-colors'>
+
+
+                      <button 
+                      onClick={()=>removeItem(item.id, uid)}
+                      className='text-gray-400 hover:text-red-500 transition-colors'>
                         <i className="ri-delete-bin-6-line text-2xl"></i>
                       </button>
                   </div>
