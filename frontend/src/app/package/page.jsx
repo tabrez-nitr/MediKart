@@ -10,11 +10,6 @@ import { getFirestore, collection, doc, writeBatch } from "firebase/firestore";
 import { app } from "@/config/firebase";
 import { useUserStore } from '@/userStore'
 
-
-
-
-
-
 function page() {
    
      const { setUserInfo, userInfo } = useUserStore();
@@ -23,27 +18,51 @@ function page() {
     console.log(products)
     
   return (
-    <div className='bg-[#F8FAFC] pb-15'>
+    <div className='min-h-screen bg-[#F8FAFC] pb-20'>
        
         <Navbar/>
-        <div className='px-3 mt-8'>
-            {products.map((item)=>(
-                <div key={item.id} className=' mt-4 rounded-[20px] px-3 py-4 grid grid-cols-[1.5fr_2fr_1fr] gap-10  bg-[#FFFFFF] shadow-[0_0_10px_#0000001A]'>
-                    <Image src={item.image} width={100} height={100} alt=""  className='border-1'/>
-                    <div className='flex flex-col justify-center '>
-                    <h2 className='font-medium'>{item.name}</h2>
-                    <p className='text-[15px] text-[black]/50'>{item.unit} unit</p>
+
+        <main className='max-w-4xl mx-auto py-8 px-4'>
+            <header className='mb-8 text-center'>
+                <h1 className='text-3xl font-bold text-gray-800'>Clinic Package</h1>
+                <p className='mt-2 text-gray-500'>Review the products below.</p>
+            </header>
+
+            {/* A container for the list of product cards with vertical spacing */}
+            <div className='space-y-5'>
+                {products.map((item)=>(
+                    // Each product is a card with improved styling and a hover effect
+                    <div 
+                        key={item.id} 
+                        className='bg-white rounded-2xl p-4 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-in-out flex items-center gap-5'
+                    >
+                        {/* Image with a defined size and rounded corners */}
+                        <Image 
+                            src={item.image} 
+                            width={80} 
+                            height={80} 
+                            alt={item.name}
+                            className='rounded-xl object-cover flex-shrink-0'
+                        />
+
+                        {/* Text content that grows to fill available space */}
+                        <div className='flex-grow'>
+                            <h2 className='text-lg font-semibold text-gray-900'>{item.name}</h2>
+                            <p className='text-sm text-gray-500'>{item.unit} unit</p>
+                        </div>
+                        
+                        {/* The checkmark icon, now larger for better visibility */}
+                        <div className='flex-shrink-0'>
+                            <i className="ri-checkbox-circle-fill text-[#8C00FF] text-3xl"></i>
+                        </div>
                     </div>
-                    <div className='flex flex-col justify-center '>
-                    <i className="ri-checkbox-circle-fill text-[#8C00FF] text-[16px]"></i>
-                    </div>
-                    
-                </div>
-            ))}
-        </div>
+                ))}
+            </div>
+        </main>
+
         <PackageButton/>
     </div>
   )
 }
 
-export default page
+export default page;
