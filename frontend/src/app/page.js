@@ -1,9 +1,85 @@
+'use client'
 import Image from "next/image";
+import { useEffect,useState } from "react";
+import { auth } from "@/config/firebase";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import {doc , getDoc} from "firebase/firestore";
+import { db } from "@/config/firebase";
+import { useRouter } from "next/navigation";
+import { userInfo } from "@/userStore";
+
+
 
 export default function Home() {
+
+
+  const [isLoading , setIsLoading] = useState(true)
+  const { email , setEmail , name , setName , role , setRole , uid , setUid , address , setAddress , cart , setCart } = userInfo();
+  const router = useRouter()
+
+
+
+  const handelButtonClick = () => {
+  
+    console.log("button clicked")
+    if(email)
+    router.push('/package')
+    else 
+    router.push('/login')
+  }
+
+  useEffect (()=>{
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth , async(user)=>{
+      if(user){
+        const docRef = doc(db, "users" , user.uid)
+        const docSnap = await getDoc(docRef)
+        console.log(docSnap.data())
+
+        if(docSnap.exists()){
+          console.log("Document data:", docSnap.data());
+          setEmail(docSnap.data().email)
+          setName(docSnap.data().name)
+          setRole(docSnap.data().role)
+          setUid(docSnap.data().uid)
+          setAddress(docSnap.data().address)
+          setCart(docSnap.data().cart)
+        }
+        else{
+          console.log("No such document");
+        }
+      }
+      setIsLoading(false)
+    })
+
+    },[])
+
+
+//  const auth = getAuth();
+
+//     //listner for state change 
+//     const unsubscribe = onAuthStateChanged(auth , async(user)=>{
+
+  if(isLoading){
+    return (
+      <div>
+        <h1>Loading...</h1>
+      </div>
+    )
+  }
+
+
   return (
-    <div>
-        <h1>Hello Welcome to the first page </h1>
+    <div className="min-h-screen  flex flex-col">
+     < div className="flex justify-center items-center  min-h-screen">
+        <h1 className="text-[20px] font-medium"> Fundameter </h1>
+        </div>
+        <div className="flex justify-center">
+        <button
+        onClick={handelButtonClick}
+         className="text-[20px] font-medium bg-[#8C00FF] text-white px-10 py-2 rounded absolute bottom-5 ">Set Up Fundameter Account</button>
+        </div>
     </div>
   );
-}
+
+  }
