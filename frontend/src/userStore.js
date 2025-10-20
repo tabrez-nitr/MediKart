@@ -1,19 +1,46 @@
 import { create } from "zustand";
 
-const userInfo = create((set)=>({
-     name : "",
-     setName : (name) => set((state)=>({name : name})),
-     email : "",
-     setEmail : (email) => set((state)=>({email : email})),
-     role : "",
-     setRole : (role) => set((state)=>({role : role})),
-     uid : "",
-     setUid : (uid) => set((state)=>({uid : uid})),
-     address : [],
-     setAddress : (address) => set((state)=>({address : [...address , ...state.address]})),
-     cart : [],
-     setCart : (cart) => set((state)=>({cart : [...cart , ...state.cart]}))
-}))
+const useUserStore = create((set) => ({
+  // --- STATE ---
+  name: "",
+  email: "",
+  role: "",
+  uid: "",
+  addresses: [], // An array to hold address objects
+
+  // --- ACTIONS ---
+
+  // Sets all user info at once, typically after login
+  setUserInfo: (userData) => set({
+    name: userData.displayName || "",
+    email: userData.email || "",
+    uid: userData.uid || "",
+    role: userData.role || "customer", // Default to customer
+    addresses: userData.addresses || [],
+  }),
+
+  // Action to add a SINGLE new address to the array
+  addAddress: (newAddress) => set((state) => ({
+    addresses: [...state.addresses, newAddress],
+    // This correctly creates a new array with the old addresses plus the new one.
+  })),
+  
+  // Action to remove an address by its label or ID
+  removeAddress: (addressLabel) => set((state) => ({
+    addresses: state.addresses.filter(addr => addr.label !== addressLabel),
+  })),
+
+  // Clears all user info, typically on logout
+  clearUserInfo: () => set({
+    name: "",
+    email: "",
+    uid: "",
+    role: "",
+    addresses: [],
+  }),
+}));
+
+
 
 const orderInfo = create((set)=>(
     {
@@ -28,4 +55,4 @@ const orderInfo = create((set)=>(
 ))
 
 
-export { userInfo , orderInfo  }
+export { useUserStore , orderInfo  }

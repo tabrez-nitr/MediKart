@@ -3,13 +3,15 @@
 import React from "react";
 import { signInWithPopup } from 'firebase/auth'
 import { auth , provider } from '@/config/firebase'
-import { userInfo } from '@/userStore'
 import { doc , setDoc } from 'firebase/firestore'
 import { db } from '@/config/firebase'
+import { useUserStore } from '@/userStore'
+import { useRouter } from 'next/navigation'
 
 export default function GoogleLogIn() {
 
-    const { email ,setEmail , name , setName , role , setRole , uid , setUid , setAddress , setCart } = userInfo()
+    const { setUserInfo , email , name , uid , role } = useUserStore()
+    const router = useRouter()
 
   const handleGoogleLogin = async() => {
     try{
@@ -36,14 +38,9 @@ export default function GoogleLogIn() {
             cart : []
         },{merge : true})
 
-
-        //zustand update 
-        setEmail(user.email)
-        setName(user.displayName)
-        setUid(user.uid)
-        setRole("user")
-        setAddress([])
-        setCart([])
+        setUserInfo(user);
+        if(user)
+          router.push('/package')
     }
     catch(error){
         console.log(error)

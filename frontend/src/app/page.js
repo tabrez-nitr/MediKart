@@ -6,7 +6,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {doc , getDoc} from "firebase/firestore";
 import { db } from "@/config/firebase";
 import { useRouter } from "next/navigation";
-import { userInfo } from "@/userStore";
+import { useUserStore } from "@/userStore";
+
 
 
 
@@ -14,8 +15,9 @@ export default function Home() {
 
 
   const [isLoading , setIsLoading] = useState(true)
-  const { email , setEmail , name , setName , role , setRole , uid , setUid , address , setAddress , cart , setCart } = userInfo();
   const router = useRouter()
+
+  const { email , setUserInfo , clearUserInfo } = useUserStore();
 
 
 
@@ -38,27 +40,21 @@ export default function Home() {
 
         if(docSnap.exists()){
           console.log("Document data:", docSnap.data());
-          setEmail(docSnap.data().email)
-          setName(docSnap.data().name)
-          setRole(docSnap.data().role)
-          setUid(docSnap.data().uid)
-          setAddress(docSnap.data().address)
-          setCart(docSnap.data().cart)
+          setUserInfo(docSnap.data());
+         
         }
         else{
           console.log("No such document");
+          clearUserInfo();
+         
         }
       }
       setIsLoading(false)
-    })
+    }) 
+    return () => unsubscribe();
 
     },[])
 
-
-//  const auth = getAuth();
-
-//     //listner for state change 
-//     const unsubscribe = onAuthStateChanged(auth , async(user)=>{
 
   if(isLoading){
     return (

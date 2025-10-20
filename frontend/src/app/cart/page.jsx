@@ -1,11 +1,14 @@
 'use client'
 import React from 'react'
-import { userInfo } from '@/userStore'
+// import { userInfo } from '@/userStore'
 import Link from 'next/link';
+import { useState } from 'react';
+import useCartStore from '@/stores/useCart';
+
 
 
 function userCart() {
-  const {cart} = userInfo();
+  const {cart} = useCartStore();
 
      
 

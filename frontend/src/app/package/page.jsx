@@ -1,10 +1,23 @@
-import React from 'react'
+'use client'
+import React, { useEffect } from 'react'
 import { getPackageElement } from '@/api/modalApi'
 import Navbar from '@/components/Navbar'
 import Image from 'next/image'
 import PackageButton from '@/components/PackageButton'
 
+// import { cart } from '@/stores/userStore'
+import { getFirestore, collection, doc, writeBatch } from "firebase/firestore";
+import { app } from "@/config/firebase";
+import { useUserStore } from '@/userStore'
+
+
+
+
+
+
 function page() {
+   
+     const { setUserInfo, userInfo } = useUserStore();
 
     const products = getPackageElement()
     console.log(products)
