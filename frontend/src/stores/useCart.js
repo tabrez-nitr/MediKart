@@ -5,7 +5,33 @@ import { db } from "@/config/firebase"; // Assuming your firebase config is expo
 const useCartStore = create((set, get) => ({
     cart : [],
     setCart : (cart) => set({ cart }),
-    clearCart : () => set({ cart : [] }),
+    
+    /**
+     * Clears the cart in both local state and Firestore.
+     * @param {string} userId - The ID of the currently logged-in user.
+     */
+    clearCart: async (userId) => {
+        const originalCart = get().cart; // Keep a backup in case of an error
+
+        // 1. Optimistically clear the local state for a quick UI response
+        set({ cart: [] });
+
+        // 2. Update the Firestore database
+        if (userId) {
+            const userDocRef = doc(db, "users", userId);
+            try {
+                // Set the cart field in Firestore to an empty array
+                await updateDoc(userDocRef, { cart: [] });
+                console.log("Cart cleared in Firestore successfully!");
+            } catch (error) {
+                console.error("Error clearing cart in Firestore: ", error);
+                // If Firestore fails, revert the local state change
+                set({ cart: originalCart });
+            }
+        } else {
+            console.error("No user ID provided. Cannot clear cart in database.");
+        }
+    },
     
     /**
      * This function adds a new item to the cart and then saves the entire
@@ -78,8 +104,6 @@ const useCartStore = create((set, get) => ({
     initializeCart: (initialCart) => {
         set({ cart: initialCart || [] });
     },
-    
-    clearCart : () => set((state)=>({cart : []})),
     
     /**
      * Removes an item from the cart in both local state and Firestore.
