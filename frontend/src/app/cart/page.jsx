@@ -1,17 +1,26 @@
 'use client'
 import React from 'react'
-// import { userInfo } from '@/userStore'
+
 import Link from 'next/link';
 import { useState } from 'react';
 import useCartStore from '@/stores/useCart';
 import { useUserStore } from '@/userStore';
+import useAddressStore from '@/stores/useAddress';
+import { useRouter } from 'next/navigation';
+import Address from '@/components/Address';
 
 
 // Renamed to UserCart (PascalCase) which is a standard convention for React components
 function UserCart() {
-  const { cart } = useCartStore();
-  const {uid} = useUserStore();
 
+   const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+  const { cart } = useCartStore();
+  const { uid } = useUserStore();
+  const { address , addressShip , setAddressShip } = useAddressStore();
+  const router = useRouter();
+  console.log("from cart"+JSON.stringify(address))
   const sample = [{
     id : 2000020002,
     name : "Fundameter Package",
@@ -23,7 +32,15 @@ function UserCart() {
   console.log( cart )
   const { removeItem } = useCartStore();
 
+   
+  const handleCheckout = () => {
+    if(address){
+        router.push("/checkout")
+    }else{
+    }
+  }
 
+ 
 
   // --- Improved Empty Cart View ---
   // If your cart is empty, this cleaner UI will be displayed.
@@ -31,6 +48,7 @@ function UserCart() {
   if (cart.length === 0) {
     return (
       <div className='flex flex-col items-center justify-center min-h-screen bg-gray-50 text-center px-4'>
+        
         <div className='p-8 bg-white rounded-full shadow-md mb-6'>
           <i className="ri-shopping-cart-line text-6xl text-indigo-500"></i>
         </div>
@@ -53,6 +71,7 @@ function UserCart() {
 
   return (
    <div className='min-h-screen bg-[#F8FAFC] font-sans'>
+    
     {/* --- Header --- */}
     <header className='relative flex items-center justify-center py-4 bg-white shadow-sm'>
         <Link href="/package" className="absolute left-4 top-1/2 -translate-y-1/2">
@@ -62,6 +81,25 @@ function UserCart() {
     </header>
 
     <main className='max-w-4xl mx-auto p-4 md:p-6'>
+    
+     
+     {address ? (<div className='bg-white grid grid-cols-[3fr_1fr] rounded-2xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] p-3 px-3 mb-5 text-[14px]'>
+          <div>
+          <p>Deliver to : <span className="font-semibold"> {address.fullName}, {address.pincode} </span></p>
+          <p className='text-black/60'> {address.phone}, {address.city} ...</p>
+          </div>
+          <button 
+          onClick={() => setIsModalOpen(true)}
+           className='text-[20px] text-indigo-600'><i className="ri-edit-fill"></i></button>
+
+     </div>) : (<div className='mb-4 flex justify-end'>
+              <button 
+              onClick={() => setIsModalOpen(true)}
+              className='text-[20px] text-indigo-600'><i className="ri-edit-fill"></i></button>
+     </div>)} 
+
+
+
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
 
           {/* --- Cart Items List --- */}
@@ -99,6 +137,7 @@ function UserCart() {
               </div>
             ))}
           </div>
+         
 
           {/* --- Order Summary --- */}
           <div className='lg:col-span-1'>
@@ -119,13 +158,20 @@ function UserCart() {
                 <p>Total</p>
                 <p>₹ {total.toLocaleString()}</p>
               </div>
-              <button className='w-full mt-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-all transform hover:scale-105'>
+
+              <button 
+              onClick={handleCheckout}
+              className='w-full mt-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-all transform hover:scale-105'>
                 Proceed to Checkout
               </button>
             </div>
           </div>
         </div>
       </main>
+      <Address
+                isOpen={isModalOpen} 
+                onClose={() => setIsModalOpen(false)} 
+            />
    </div>
   )
 }

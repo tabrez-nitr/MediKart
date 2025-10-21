@@ -4,15 +4,55 @@ import { getPackageElement } from '@/api/modalApi'
 import Navbar from '@/components/Navbar'
 import Image from 'next/image'
 import PackageButton from '@/components/PackageButton'
+import { useState } from 'react'
 
 // import { cart } from '@/stores/userStore'
-import { getFirestore, collection, doc, writeBatch } from "firebase/firestore";
-import { app } from "@/config/firebase";
+import { doc , getDoc} from "firebase/firestore";
+import {  db } from "@/config/firebase";
 import { useUserStore } from '@/userStore'
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import  useAddressStore  from "@/stores/useAddress";
+import  useCartStore  from "@/stores/useCart";
+
+
 
 function page() {
    
-     const { setUserInfo, userInfo } = useUserStore();
+    const [isLoading , setIsLoading] = useState(true)
+    const {cart , setCart} = useCartStore();
+    const { email , setUserInfo , clearUserInfo } = useUserStore();
+    const { setAddress } = useAddressStore();
+    
+    
+
+    useEffect (()=>{
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth , async(user)=>{
+      if(user){
+        const docRef = doc(db, "users" , user.uid)
+        const docSnap = await getDoc(docRef)
+        console.log(docSnap.data())
+
+        if(docSnap.exists()){
+          console.log("Document data:", docSnap.data());
+          setUserInfo(docSnap.data());
+          setCart(docSnap.data().cart);
+          setAddress(docSnap.data().address);
+          
+        }
+        else{
+          console.log("No such document");
+          clearUserInfo();
+         
+        }
+      }
+      setIsLoading(false)
+    }) 
+    return () => unsubscribe();
+
+    },[])
+   
+    
 
     const products = getPackageElement()
     console.log(products)

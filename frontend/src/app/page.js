@@ -8,6 +8,8 @@ import { db } from "@/config/firebase";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/userStore";
 import  useCartStore  from "@/stores/useCart";
+import useAddressStore from '@/stores/useAddress';
+
 
 
 
@@ -22,6 +24,7 @@ export default function Home() {
   const {cart , setCart} = useCartStore();
 
   const { email , setUserInfo , clearUserInfo } = useUserStore();
+  const { setAddress } = useAddressStore();
 
 
 
@@ -46,6 +49,7 @@ export default function Home() {
           console.log("Document data:", docSnap.data());
           setUserInfo(docSnap.data());
           setCart(docSnap.data().cart);
+          setAddress(docSnap.data().address);
          
         }
         else{

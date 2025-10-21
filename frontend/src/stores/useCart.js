@@ -5,6 +5,7 @@ import { db } from "@/config/firebase"; // Assuming your firebase config is expo
 const useCartStore = create((set, get) => ({
     cart : [],
     setCart : (cart) => set({ cart }),
+    clearCart : () => set({ cart : [] }),
     
     /**
      * This function adds a new item to the cart and then saves the entire

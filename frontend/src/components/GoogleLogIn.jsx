@@ -7,10 +7,14 @@ import { doc , setDoc } from 'firebase/firestore'
 import { db } from '@/config/firebase'
 import { useUserStore } from '@/userStore'
 import { useRouter } from 'next/navigation'
+import useCartStore from '@/stores/useCart'
+import useAddressStore from '@/stores/useAddress'
 
 export default function GoogleLogIn() {
 
     const { setUserInfo , email , name , uid , role } = useUserStore()
+    const { setAddress } = useAddressStore()
+    const { setCart } = useCartStore()
     const router = useRouter()
 
   const handleGoogleLogin = async() => {
@@ -33,9 +37,7 @@ export default function GoogleLogIn() {
             name : user.displayName,
             email : user.email,
             uid : user.uid,
-            address : [],
             role: "user",
-            cart : []
         },{merge : true})
 
         setUserInfo(user);

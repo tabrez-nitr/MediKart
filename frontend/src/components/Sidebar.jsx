@@ -6,19 +6,28 @@ import { useUserStore } from '@/userStore';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Navbar from './Navbar';
+import useAddressStore from '@/stores/useAddress';
+import useCartStore from '@/stores/useCart';
 
 export default function Sidebar() {
+
+
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
   const { clearUserInfo } = useUserStore();
+  const { clearAddress } = useAddressStore();
+  const { clearCart } = useCartStore();
 
   const handelLogout = async() => {
     try{
        await signOut(auth);
        clearUserInfo();
+       clearAddress();
+       clearCart();
+
        console.log("user logged out");
        router.push('/');
     }
