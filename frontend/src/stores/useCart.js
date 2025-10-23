@@ -5,6 +5,7 @@ import { db } from "@/config/firebase"; // Assuming your firebase config is expo
 const useCartStore = create((set, get) => ({
     cart : [],
     setCart : (cart) => set({ cart }),
+    removeCart : () => set({ cart : [] }),
     
     /**
      * Clears the cart in both local state and Firestore.

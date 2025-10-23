@@ -6,7 +6,7 @@ import { arrayUnion } from "firebase/firestore";
 
 const useOrdersStore = create((set,get)=>({
     orders : [],
-    setOrders : (orders)=>set({orders}),
+   setOrders: (orders) => set({ orders }),
     isLoading: false,
     clearOrders : ()=>set({orders : []}),
 
@@ -25,7 +25,7 @@ const useOrdersStore = create((set,get)=>({
 
              const orderToSave = {
             ...order,
-            createdAt: new Date().toISOString(), // optional metadata
+            createdAt: new Date().toDateString(), // optional metadata
              };
 
             // --- This is the changed part ---

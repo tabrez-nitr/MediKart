@@ -13,6 +13,7 @@ import { useUserStore } from '@/userStore'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import  useAddressStore  from "@/stores/useAddress";
 import  useCartStore  from "@/stores/useCart";
+import useOrdersStore from '@/stores/useOrders'
 
 
 
@@ -22,6 +23,7 @@ function page() {
     const {cart , setCart} = useCartStore();
     const { email , setUserInfo , clearUserInfo } = useUserStore();
     const { setAddress } = useAddressStore();
+    const { setOrders } = useOrdersStore();
     
     
 
@@ -36,8 +38,23 @@ function page() {
         if(docSnap.exists()){
           console.log("Document data:", docSnap.data());
           setUserInfo(docSnap.data());
-          setCart(docSnap.data().cart);
+         
           setAddress(docSnap.data().address);
+            
+          if(docSnap.data().cart){
+           setCart(docSnap.data().cart);
+          }
+          else{
+            setCart([]);
+          }
+
+          if(docSnap.data().order){
+            setOrders(docSnap.data().order);
+          }
+          else{
+            setOrders([]);
+          }
+         
           
         }
         else{

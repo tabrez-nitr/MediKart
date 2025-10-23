@@ -19,14 +19,14 @@ export default function Sidebar() {
   const handleClose = () => setIsOpen(false);
   const { clearUserInfo } = useUserStore();
   const { clearAddress } = useAddressStore();
-  const { clearCart } = useCartStore();
+  const { clearCart , removeCart } = useCartStore();
 
   const handelLogout = async() => {
     try{
        await signOut(auth);
        clearUserInfo();
        clearAddress();
-       clearCart();
+       removeCart();
 
        console.log("user logged out");
        router.push('/');
