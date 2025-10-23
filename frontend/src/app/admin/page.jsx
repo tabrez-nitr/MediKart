@@ -25,6 +25,7 @@ function Admin() {
             localStorage.setItem('isAdminAuthenticated', 'true');
             // Redirect to the admin dashboard
             setIsAdmin(true);
+            localStorage.setItem('isAdmin' , true);
             router.push('/admin/dashboard');
         } else {
             setError("Invalid username or password."); // Set a user-friendly error message

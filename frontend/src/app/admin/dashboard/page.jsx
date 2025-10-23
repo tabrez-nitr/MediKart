@@ -16,19 +16,12 @@ function AdminDashboard() {
     // --- Authentication Check ---
     useEffect(() => {
         // Replace this with your actual admin authentication check
-        const checkAuth = () => {
-             // Example: Check local storage or a context
-             const authenticated = localStorage.getItem('isAdminAuthenticated') === 'true';
-             if (!authenticated) {
-                 setIsAdmin(false); // Update Zustand store if using
-                 // Optionally redirect using next/navigation if needed here
-                 // router.push('/admin/login');
-             } else {
-                 setIsAdmin(true);
-             }
-        };
-        checkAuth();
-    }, [setIsAdmin]);
+        const isAdmin = localStorage.getItem('isAdmin') === 'true';
+        if(isAdmin){
+            setIsAdmin(true);
+        }
+        console.log(isAdmin);   
+    }, []);
 
 
     // --- Data Fetching ---
@@ -134,7 +127,7 @@ function AdminDashboard() {
     // --- Main Dashboard UI ---
     return (
         <div className="p-4 md:p-8 bg-gradient-to-br from-blue-50 via-white to-blue-100 min-h-screen">
-            <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">Admin Dashboard - Customer Orders</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">Admin Dashboard</h1>
 
             {usersData.length === 0 ? (
                 <p className="text-center text-gray-500">No users or orders found.</p>

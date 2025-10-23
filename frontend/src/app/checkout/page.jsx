@@ -4,8 +4,8 @@ import useAddressStore from '@/stores/useAddress';
 
 import useCartStore from '@/stores/useCart';
 import useOrdersStore from '@/stores/useOrders';
-import {useUserStore} from '@/userStore';
-import { useRouter } from 'next/navigation'
+import { useUserStore } from '@/userStore';
+import { useRouter } from 'next/navigation';
 
 // --- MOCK STORES for Demonstration ---
 const useUser = () => ({
@@ -64,58 +64,112 @@ const DELIVERY_CHARGE = 40.00;
 // --- Main Checkout Page Component ---
 export default function CheckoutPage() {
 
-
-
-
     //store data 
     const { address } = useAddressStore();
-    const { cart  , clearCart} = useCartStore();
+    const { cart, clearCart } = useCartStore();
     const { addOrder } = useOrdersStore();
     const { uid } = useUserStore();
-    const router =  useRouter();
+    const router = useRouter();
 
     const [selectedPayment, setSelectedPayment] = useState('upi'); // 'upi' or 'cod'
 
+    // --- NEW STATE for confirmation animation ---
+    const [isLoading, setIsLoading] = useState(false);
+    const [isConfirmed, setIsConfirmed] = useState(false);
+    // ------------------------------------------
+
     const deliveryEstimate = getDeliveryEstimate();
 
-    const placeOrder = ()=>{
-      //  addOrder( data  , uid )
-      const data = 
+    // --- MODIFIED function to handle animation ---
+    const placeOrder = () => {
+        setIsLoading(true); // Disable button
+
+        // Original logic
+        const data =
         {
-          address : address,
-          payment : 'COD',
-          status : 'pending',
-          items : cart,
-          total : total, 
+            address: address,
+            payment: 'COD',
+            status: 'pending',
+            items: cart,
+            total: total,
         }
-        addOrder(data , uid)
+        addOrder(data, uid)
         clearCart(uid)
 
-        router.push('/package')
+        setIsLoading(false);
+        setIsConfirmed(true); // Show confirmation animation
+
+        // Wait for 2.5 seconds before redirecting
+        setTimeout(() => {
+            router.push('/orders');
+        }, 2500); // 2.5 seconds
     }
+    // ------------------------------------------
 
     const paymentOptions = [
         { id: 'upi', title: 'UPI' },
         { id: 'cod', title: 'Cash on Delivery (COD)' },
     ];
-    
+
     // Using useMemo to prevent recalculating on every render
     const { subtotal, total } = useMemo(() => {
         const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
         const total = subtotal + DELIVERY_CHARGE;
         return { subtotal, total };
     }, [cart]);
-    
+
     return (
         <div className="bg-gray-50 min-h-screen font-sans">
+
+            {/* --- MODIFIED: Order Confirmation Overlay for Flipkart-style --- */}
+            {isConfirmed && (
+  <div className="fixed inset-0 bg-white bg-opacity-70 flex flex-col items-center justify-center z-50">
+    <div className="bg-white p-10 rounded-3xl shadow-2xl flex flex-col items-center relative overflow-hidden transform animate-fadeInScale">
+      
+      {/* Animated glowing ring behind checkmark */}
+      <div className="absolute w-48 h-48 rounded-full bg-green-200 opacity-20 blur-3xl animate-pulse"></div>
+      
+      {/* Checkmark circle with smooth draw animation */}
+      <div className="relative flex items-center justify-center w-28 h-28 rounded-full bg-green-100 shadow-inner animate-bounceIn">
+        <svg
+          className="w-20 h-20 text-green-600 animate-draw"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={2}
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M4.5 12.75l6 6 9-13.5"
+          />
+        </svg>
+      </div>
+
+      {/* Success Text */}
+      <h2 className="text-3xl font-bold text-gray-800 mt-6 animate-fadeUp delay-100">
+        Order Placed Successfully!
+      </h2>
+      <p className="text-lg text-gray-600 mt-3 animate-fadeUp delay-200">
+        Thank you for your purchase.
+      </p>
+      <p className="text-md text-gray-500 mt-2 animate-fadeUp delay-300">
+        Redirecting to your orders...
+      </p>
+    </div>
+  </div>
+)}
+            {/* --- END: Order Confirmation Overlay --- */}
+
             <div className="container mx-auto px-4 py-8 lg:py-12">
                 <h1 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-8 text-center">Checkout</h1>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-                    
+
                     {/* Left Column: Shipping and Payment */}
                     <div className="lg:col-span-2 space-y-8">
-                        
+
                         {/* 1. Shipping Address - Now displays a single address */}
                         <div className="bg-white p-6 rounded-xl shadow-md">
                             <h2 className="text-xl font-bold text-gray-900 mb-4">Shipping Address</h2>
@@ -188,11 +242,22 @@ export default function CheckoutPage() {
                                     <span>₹{total.toFixed(2)}</span>
                                 </div>
                             </div>
-                            <button 
-                               onClick={placeOrder}
-                               className="w-full mt-6 bg-indigo-600 text-white font-bold py-3 rounded-lg hover:bg-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-                                {selectedPayment === 'cod' ? 'Confirm Order' : 'Proceed to Payment'}
+
+                            {/* --- MODIFIED Button with disabled state and new text --- */}
+                            <button
+                                onClick={placeOrder}
+                                disabled={isLoading || isConfirmed}
+                                className="w-full mt-6 bg-indigo-600 text-white font-bold py-3 rounded-lg hover:bg-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:bg-indigo-400 disabled:cursor-not-allowed"
+                            >
+                                {isLoading
+                                    ? 'Placing Order...'
+                                    : isConfirmed
+                                        ? 'Success!'
+                                        : (selectedPayment === 'cod' ? 'Confirm Order' : 'Proceed to Payment')
+                                }
                             </button>
+                            {/* -------------------------------------------------------- */}
+
                         </div>
                     </div>
                 </div>

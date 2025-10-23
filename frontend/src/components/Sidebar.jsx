@@ -41,7 +41,7 @@ export default function Sidebar() {
     { href: "/", icon: "ri-home-4-line", label: "Home" },
     { href: "/orders", icon: "ri-shopping-cart-2-line", label: "Orders" }, // Assuming a different route
     { href: "/profile", icon: "ri-user-line", label: "Profile" }, // Assuming a different route
-    { href: "/contact", icon: "ri-phone-line", label: "Contact Us" }, // Assuming a different route
+    { href: "/contactUs", icon: "ri-phone-line", label: "Contact Us" }, // Assuming a different route
   ];
 
   return (

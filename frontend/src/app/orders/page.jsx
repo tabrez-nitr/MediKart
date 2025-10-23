@@ -38,19 +38,23 @@ import { v4 as uuidv4 } from 'uuid';
 
 // A reusable badge component for the order status
 const StatusBadge = ({ status }) => {
-  const baseClasses = 'px-3 py-1 text-xs font-medium rounded-full capitalize';
+  // Base styling for all badges
+  const baseClasses = 'px-3 py-1 text-xs font-medium rounded-full capitalize inline-block';
+
+  // Define Tailwind classes for each status
   const statusClasses = {
-    pending: 'bg-yellow-100 text-yellow-800',
-    delivered: 'bg-green-100 text-green-800',
-    cancelled: 'bg-red-100 text-red-800',
+    pending: 'bg-yellow-100 text-yellow-800', // Yellow for pending
+    processing: 'bg-blue-100 text-blue-800',   // Blue for processing
+    delivered: 'bg-green-100 text-green-800',  // Green for delivered
+    cancelled: 'bg-red-100 text-red-800',    // Red for cancelled
   };
+
+  // Determine the classes based on the status prop, with a fallback to gray
+  const specificClasses = statusClasses[status?.toLowerCase()] || 'bg-gray-100 text-gray-800';
+
   return (
-    <span
-      className={`${baseClasses} ${
-        statusClasses[status] || 'bg-gray-100 text-gray-800'
-      }`}
-    >
-      {status}
+    <span className={`${baseClasses} ${specificClasses}`}>
+      {status || 'Unknown'} {/* Display status text, or 'Unknown' if undefined */}
     </span>
   );
 };
