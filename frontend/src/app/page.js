@@ -78,13 +78,15 @@ export default function Home() {
         />
         {/* Optional: If you still want the text "Fundameter" below the logo, make it dark */}
         <h1 className="text-[28px] font-bold text-gray-800 mt-4">Fundaymeter</h1>
+        <p className="text-gray-600 mt-2 text-[16px] text-center">Partnering with your fitness</p>
+        <p className="text-gray-600 mt-2 text-[16px] text-center">Set up your account to get started.</p>
       </div>
 
       {/* Button Section - Fixed at the bottom */}
       <div className="w-full flex justify-center pb-8"> {/* Padding-bottom to lift it slightly */}
         <button
           onClick={handleButtonClick}
-          className="text-[20px] font-medium bg-[#8C00FF] text-white px-10 py-3 rounded-lg shadow-lg hover:bg-[#6a00cc] transition-colors duration-200 w-full max-w-sm"
+          className="text-[20px] font-medium bg-indigo-500 text-white px-10 py-3 rounded-lg shadow-lg hover:bg-[#6a00cc] transition-colors duration-200 w-full max-w-sm"
         >
           Set Up Fundameter Account
         </button>

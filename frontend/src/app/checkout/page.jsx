@@ -16,7 +16,7 @@ const useUser = () => ({
 
 // --- DYNAMIC DATE CALCULATION for Delivery Estimate ---
 const getDeliveryEstimate = () => {
-    const today = new Date('2025-10-21T13:46:00'); // Setting a fixed "current" date for consistency
+   const today = new Date();
     const addDays = (date, days) => {
         const result = new Date(date);
         result.setDate(result.getDate() + days);

@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import 'remixicon/fonts/remixicon.css';
 
+
+
+
 html, body {
     overflow-x: hidden;
   }
@@ -101,3 +104,9 @@ html, body {
   .delay-200 { animation-delay: 0.2s; }
   .delay-300 { animation-delay: 0.3s; }
 
+
+
+
+  /* home page */
+
+  

@@ -142,7 +142,8 @@ const useCartStore = create((set, get) => ({
      */
     increaseQuantity: async (id, userId) => {
         const originalCart = get().cart;
-
+         
+        console.log("inside increase qty called ")
         // 1. Update local state
         set((state) => ({
             cart: state.cart.map(item =>

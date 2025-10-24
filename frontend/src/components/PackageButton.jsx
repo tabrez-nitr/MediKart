@@ -69,7 +69,7 @@ function PackageButton() { // Renamed component to follow React conventions (Pas
                 <div className='flex justify-center'>
                     <button
                         onClick={handleAddToCart}
-                        className='w-full max-w-md text-white bg-[#8C00FF] hover:bg-[#7a00e6] px-10 text-[18px] md:text-[20px] py-3 rounded-[12px] flex items-center justify-center gap-2 transition-colors duration-200' // Added hover, responsive text, flex for icon
+                        className='w-full max-w-md text-white bg-indigo-500 hover:bg-[#7a00e6] px-10 text-[18px] md:text-[20px] py-3 rounded-[12px] flex items-center justify-center gap-2 transition-colors duration-200' // Added hover, responsive text, flex for icon
                     >
                         <i className="ri-shopping-cart-2-fill text-xl"></i> {/* Assuming Remix Icons */}
                         Add to Cart
