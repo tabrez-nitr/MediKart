@@ -124,9 +124,9 @@ export default function OrdersPage() {
                           </p>
                         </div>
                       </div>
-                      <button className="px-4 py-2 text-sm font-medium text-indigo-600 border border-indigo-200 rounded-lg hover:bg-indigo-50 transition">
+                      {/* <button className="px-4 py-2 text-sm font-medium text-indigo-600 border border-indigo-200 rounded-lg hover:bg-indigo-50 transition">
                         Track Order
-                      </button>
+                      </button> */}
                     </div>
                   ))}
                 </div>
